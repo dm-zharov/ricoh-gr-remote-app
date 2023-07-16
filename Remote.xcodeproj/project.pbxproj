@@ -11,6 +11,7 @@
 		2345D6192A642AEA00C0F7DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6182A642AEA00C0F7DF /* ContentView.swift */; };
 		2345D61B2A642AEB00C0F7DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2345D61A2A642AEB00C0F7DF /* Assets.xcassets */; };
 		2345D61F2A642AEB00C0F7DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2345D61E2A642AEB00C0F7DF /* Preview Assets.xcassets */; };
+		2345D6272A642CCE00C0F7DF /* BluetoothService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6262A642CCE00C0F7DF /* BluetoothService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,8 @@
 		2345D61A2A642AEB00C0F7DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2345D61C2A642AEB00C0F7DF /* Remote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Remote.entitlements; sourceTree = "<group>"; };
 		2345D61E2A642AEB00C0F7DF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2345D6252A642C8900C0F7DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2345D6262A642CCE00C0F7DF /* BluetoothService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +55,10 @@
 		2345D6152A642AEA00C0F7DF /* Remote */ = {
 			isa = PBXGroup;
 			children = (
-				2345D6162A642AEA00C0F7DF /* RemoteApp.swift */,
-				2345D6182A642AEA00C0F7DF /* ContentView.swift */,
+				2345D62A2A642CE900C0F7DF /* App */,
+				2345D6292A642CD900C0F7DF /* Scene */,
+				2345D6282A642CD100C0F7DF /* Service */,
+				2345D6252A642C8900C0F7DF /* Info.plist */,
 				2345D61A2A642AEB00C0F7DF /* Assets.xcassets */,
 				2345D61C2A642AEB00C0F7DF /* Remote.entitlements */,
 				2345D61D2A642AEB00C0F7DF /* Preview Content */,
@@ -67,6 +72,38 @@
 				2345D61E2A642AEB00C0F7DF /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2345D6282A642CD100C0F7DF /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				2345D6262A642CCE00C0F7DF /* BluetoothService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		2345D6292A642CD900C0F7DF /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				2345D62B2A642CF100C0F7DF /* Main */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		2345D62A2A642CE900C0F7DF /* App */ = {
+			isa = PBXGroup;
+			children = (
+				2345D6162A642AEA00C0F7DF /* RemoteApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		2345D62B2A642CF100C0F7DF /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2345D6182A642AEA00C0F7DF /* ContentView.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,6 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2345D6192A642AEA00C0F7DF /* ContentView.swift in Sources */,
+				2345D6272A642CCE00C0F7DF /* BluetoothService.swift in Sources */,
 				2345D6172A642AEA00C0F7DF /* RemoteApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,6 +307,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Remote/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Camera connection";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -279,10 +320,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gr.camera.Remote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -307,6 +348,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Remote/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Camera connection";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -317,10 +361,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gr.camera.Remote;
 				PRODUCT_NAME = "$(TARGET_NAME)";

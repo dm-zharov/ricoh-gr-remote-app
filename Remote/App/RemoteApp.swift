@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct RemoteApp: App {
+    private let bluetoothService = BluetoothService()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
