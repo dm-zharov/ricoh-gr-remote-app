@@ -7,22 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2345D6172A642AEA00C0F7DF /* RemoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6162A642AEA00C0F7DF /* RemoteApp.swift */; };
+		23132DB62A66BF65002B2F0D /* CBManagerState+CustomStringConvertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DB52A66BF65002B2F0D /* CBManagerState+CustomStringConvertable.swift */; };
+		23132DB92A6709B5002B2F0D /* BKPeripheralSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DB82A6709B5002B2F0D /* BKPeripheralSpecification.swift */; };
+		23132DBB2A670EAB002B2F0D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DBA2A670EAB002B2F0D /* AppState.swift */; };
+		23132DBD2A670EB9002B2F0D /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DBC2A670EB9002B2F0D /* AppStore.swift */; };
+		23132DC02A67106B002B2F0D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DBF2A67106B002B2F0D /* SettingsView.swift */; };
+		23132DC22A6717C4002B2F0D /* CameraInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DC12A6717C4002B2F0D /* CameraInfo.swift */; };
+		2345D6172A642AEA00C0F7DF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6162A642AEA00C0F7DF /* App.swift */; };
 		2345D6192A642AEA00C0F7DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6182A642AEA00C0F7DF /* ContentView.swift */; };
 		2345D61B2A642AEB00C0F7DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2345D61A2A642AEB00C0F7DF /* Assets.xcassets */; };
 		2345D61F2A642AEB00C0F7DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2345D61E2A642AEB00C0F7DF /* Preview Assets.xcassets */; };
-		2345D6272A642CCE00C0F7DF /* BluetoothService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6262A642CCE00C0F7DF /* BluetoothService.swift */; };
+		2345D6272A642CCE00C0F7DF /* BKCentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6262A642CCE00C0F7DF /* BKCentralManager.swift */; };
+		2345D6342A6462A100C0F7DF /* RemoteConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6332A6462A100C0F7DF /* RemoteConnector.swift */; };
+		2345D6362A64632900C0F7DF /* BKPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6352A64632900C0F7DF /* BKPeripheral.swift */; };
+		2345D6392A646E5F00C0F7DF /* CameraConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6382A646E5F00C0F7DF /* CameraConnector.swift */; };
+		2345D63F2A646FCF00C0F7DF /* CBUUID+RICOH.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D63E2A646FCF00C0F7DF /* CBUUID+RICOH.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		23132DB52A66BF65002B2F0D /* CBManagerState+CustomStringConvertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBManagerState+CustomStringConvertable.swift"; sourceTree = "<group>"; };
+		23132DB82A6709B5002B2F0D /* BKPeripheralSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BKPeripheralSpecification.swift; sourceTree = "<group>"; };
+		23132DBA2A670EAB002B2F0D /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		23132DBC2A670EB9002B2F0D /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		23132DBF2A67106B002B2F0D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		23132DC12A6717C4002B2F0D /* CameraInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraInfo.swift; sourceTree = "<group>"; };
 		2345D6132A642AEA00C0F7DF /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		2345D6162A642AEA00C0F7DF /* RemoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteApp.swift; sourceTree = "<group>"; };
+		2345D6162A642AEA00C0F7DF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		2345D6182A642AEA00C0F7DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2345D61A2A642AEB00C0F7DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2345D61C2A642AEB00C0F7DF /* Remote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Remote.entitlements; sourceTree = "<group>"; };
 		2345D61E2A642AEB00C0F7DF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2345D6252A642C8900C0F7DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		2345D6262A642CCE00C0F7DF /* BluetoothService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothService.swift; sourceTree = "<group>"; };
+		2345D6262A642CCE00C0F7DF /* BKCentralManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BKCentralManager.swift; sourceTree = "<group>"; };
+		2345D6332A6462A100C0F7DF /* RemoteConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConnector.swift; sourceTree = "<group>"; };
+		2345D6352A64632900C0F7DF /* BKPeripheral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BKPeripheral.swift; sourceTree = "<group>"; };
+		2345D6382A646E5F00C0F7DF /* CameraConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraConnector.swift; sourceTree = "<group>"; };
+		2345D63E2A646FCF00C0F7DF /* CBUUID+RICOH.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBUUID+RICOH.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +56,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23132DB72A66BFFD002B2F0D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				23132DB52A66BF65002B2F0D /* CBManagerState+CustomStringConvertable.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		23132DBE2A671060002B2F0D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				23132DBF2A67106B002B2F0D /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		2345D60A2A642AEA00C0F7DF = {
 			isa = PBXGroup;
 			children = (
@@ -57,6 +93,7 @@
 			children = (
 				2345D62A2A642CE900C0F7DF /* App */,
 				2345D6292A642CD900C0F7DF /* Scene */,
+				2345D62C2A645ABE00C0F7DF /* Data */,
 				2345D6282A642CD100C0F7DF /* Service */,
 				2345D6252A642C8900C0F7DF /* Info.plist */,
 				2345D61A2A642AEB00C0F7DF /* Assets.xcassets */,
@@ -77,7 +114,8 @@
 		2345D6282A642CD100C0F7DF /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				2345D6262A642CCE00C0F7DF /* BluetoothService.swift */,
+				2345D6372A646E5600C0F7DF /* Connector */,
+				2345D6312A64627F00C0F7DF /* Bluetooth */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -85,7 +123,8 @@
 		2345D6292A642CD900C0F7DF /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				2345D62B2A642CF100C0F7DF /* Main */,
+				2345D62B2A642CF100C0F7DF /* Content */,
+				23132DBE2A671060002B2F0D /* Settings */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -93,17 +132,48 @@
 		2345D62A2A642CE900C0F7DF /* App */ = {
 			isa = PBXGroup;
 			children = (
-				2345D6162A642AEA00C0F7DF /* RemoteApp.swift */,
+				2345D6162A642AEA00C0F7DF /* App.swift */,
+				23132DBA2A670EAB002B2F0D /* AppState.swift */,
+				23132DBC2A670EB9002B2F0D /* AppStore.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
 		};
-		2345D62B2A642CF100C0F7DF /* Main */ = {
+		2345D62B2A642CF100C0F7DF /* Content */ = {
 			isa = PBXGroup;
 			children = (
 				2345D6182A642AEA00C0F7DF /* ContentView.swift */,
 			);
-			path = Main;
+			path = Content;
+			sourceTree = "<group>";
+		};
+		2345D62C2A645ABE00C0F7DF /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				23132DC12A6717C4002B2F0D /* CameraInfo.swift */,
+				2345D63E2A646FCF00C0F7DF /* CBUUID+RICOH.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2345D6312A64627F00C0F7DF /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				23132DB72A66BFFD002B2F0D /* Extensions */,
+				23132DB82A6709B5002B2F0D /* BKPeripheralSpecification.swift */,
+				2345D6352A64632900C0F7DF /* BKPeripheral.swift */,
+				2345D6262A642CCE00C0F7DF /* BKCentralManager.swift */,
+			);
+			path = Bluetooth;
+			sourceTree = "<group>";
+		};
+		2345D6372A646E5600C0F7DF /* Connector */ = {
+			isa = PBXGroup;
+			children = (
+				2345D6332A6462A100C0F7DF /* RemoteConnector.swift */,
+				2345D6382A646E5F00C0F7DF /* CameraConnector.swift */,
+			);
+			path = Connector;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,9 +246,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23132DB92A6709B5002B2F0D /* BKPeripheralSpecification.swift in Sources */,
+				2345D6362A64632900C0F7DF /* BKPeripheral.swift in Sources */,
+				23132DC02A67106B002B2F0D /* SettingsView.swift in Sources */,
+				23132DB62A66BF65002B2F0D /* CBManagerState+CustomStringConvertable.swift in Sources */,
+				23132DC22A6717C4002B2F0D /* CameraInfo.swift in Sources */,
+				23132DBD2A670EB9002B2F0D /* AppStore.swift in Sources */,
 				2345D6192A642AEA00C0F7DF /* ContentView.swift in Sources */,
-				2345D6272A642CCE00C0F7DF /* BluetoothService.swift in Sources */,
-				2345D6172A642AEA00C0F7DF /* RemoteApp.swift in Sources */,
+				2345D6272A642CCE00C0F7DF /* BKCentralManager.swift in Sources */,
+				23132DBB2A670EAB002B2F0D /* AppState.swift in Sources */,
+				2345D6392A646E5F00C0F7DF /* CameraConnector.swift in Sources */,
+				2345D6172A642AEA00C0F7DF /* App.swift in Sources */,
+				2345D63F2A646FCF00C0F7DF /* CBUUID+RICOH.swift in Sources */,
+				2345D6342A6462A100C0F7DF /* RemoteConnector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,10 +400,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gr.camera.Remote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -361,10 +441,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = gr.camera.Remote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
