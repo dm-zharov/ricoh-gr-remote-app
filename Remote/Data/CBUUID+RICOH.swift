@@ -37,6 +37,15 @@ enum GR {
         enum CameraPower {
             static let uuid = CBUUID(string: "B58CE84C-0666-4DE9-BEC8-2D27B27B3211")
         }
+        enum BatteryLevel {
+            static let uuid = CBUUID(string: "875FC41D-4980-434C-A653-FD4A4D4410C4")
+        }
+        enum DateTime {
+            static let uuid = CBUUID(string: "FA46BBDD-8A8F-4796-8CF3-AA58949B130A")
+        }
+        enum GEOTag {
+            static let uuid = CBUUID(string: "A36AFDCF-6B67-4046-9BE7-28FB67DBC071")
+        }
         static let uuid = CBUUID(string: "4B445988-CAA0-4DD3-941D-37B4F52ACA86")
     }
     enum Shooting {

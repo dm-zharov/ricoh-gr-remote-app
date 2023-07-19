@@ -59,7 +59,7 @@ extension BKCentralManager: CBCentralManagerDelegate {
     // MARK: - Monitoring Connections with Peripherals
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        logger.debug("didConnect \(peripheral)")
+        logger.debug("didConnect \(peripheral, privacy: .public)")
         connectionHandler?(.success(.init(peripheral)))
     }
     
@@ -71,7 +71,7 @@ extension BKCentralManager: CBCentralManagerDelegate {
             return
         }
         
-        logger.debug("didDisconnectPeripheral \(peripheral) errorCode \(error.localizedDescription)")
+        logger.debug("didDisconnectPeripheral \(peripheral, privacy: .public) errorCode \(error.localizedDescription, privacy: .public)")
         connectionHandler?(.success(nil))
 
         switch errorCode {
@@ -84,7 +84,7 @@ extension BKCentralManager: CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, timestamp: CFAbsoluteTime, isReconnecting: Bool, error: Error?) {
-        logger.debug("didDisconnectPeripheral \(peripheral) timestamp \(timestamp) isReconnecting \(isReconnecting) error \(error)")
+        logger.debug("didDisconnectPeripheral \(peripheral, privacy: .public) timestamp \(timestamp, privacy: .public) isReconnecting \(isReconnecting, privacy: .public) error \(error, privacy: .public)")
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
@@ -95,7 +95,7 @@ extension BKCentralManager: CBCentralManagerDelegate {
             return
         }
         
-        logger.debug("didDisconnectPeripheral \(peripheral) error \(error.localizedDescription)")
+        logger.debug("didDisconnectPeripheral \(peripheral, privacy: .public) error \(error.localizedDescription, privacy: .public)")
         
         switch errorCode {
         case .peerRemovedPairingInformation:
@@ -115,7 +115,7 @@ extension BKCentralManager: CBCentralManagerDelegate {
     // MARK: - Monitoring Connections with Peripherals
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        logger.debug("didDiscover \(peripheral) advertisementData \(advertisementData.keys) rssi \(RSSI)")
+        logger.debug("didDiscover \(peripheral, privacy: .public) advertisementData \(advertisementData.keys, privacy: .public) rssi \(RSSI, privacy: .public)")
         
         switch peripheralSpecification {
         case .identifier(let uuid):
@@ -141,7 +141,7 @@ extension BKCentralManager: CBCentralManagerDelegate {
     // MARK: - Monitoring the Central Manager’s State
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        logger.debug("didUpdateState \(central.state)")
+        logger.debug("didUpdateState \(central.state, privacy: .public)")
         
         guard case .poweredOn = central.state else {
             return
@@ -156,7 +156,7 @@ extension BKCentralManager: CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
-        logger.debug("willRestore state \(dict)")
+        logger.debug("willRestore state \(dict, privacy: .public)")
         if let peripherals = dict[CBCentralManagerRestoredStatePeripheralsKey] as? [CBPeripheral], peripherals.count == 1 {
             self.peripheral = peripherals.first
         }
@@ -165,6 +165,6 @@ extension BKCentralManager: CBCentralManagerDelegate {
     // MARK: - Monitoring the Central Manager’s Authorization
     
     func centralManager(_ central: CBCentralManager, didUpdateANCSAuthorizationFor peripheral: CBPeripheral) {
-        logger.debug("didUpdateANCSAuthorizationFor \(peripheral)")
+        logger.debug("didUpdateANCSAuthorizationFor \(peripheral, privacy: .public)")
     }
 }

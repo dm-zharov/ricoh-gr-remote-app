@@ -13,3 +13,13 @@ struct CameraInfo {
     var serialNumber: String? // L(67...
     var bluetooth: String? // 09:03
 }
+
+struct BatteryLevel {
+    enum PowerSource: Int {
+        case battery = 0
+        case ac = 1
+    }
+    
+    var batteryLevel: Int
+    var powerSource: PowerSource
+}

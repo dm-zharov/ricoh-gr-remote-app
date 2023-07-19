@@ -11,27 +11,27 @@ import OSLog
 class BKPeripheral: NSObject {
     // MARK: - Type Aliases
 
-    public typealias DiscoverServicesHandler = ([CBService]) -> Void
-    public typealias DiscoverIncludedServicesHandler = ([CBService]) -> Void
-    public typealias DiscoverCharacteristicsHandler = ([CBCharacteristic]) -> Void
-    public typealias DiscoverDescriptorsHandler = ([CBDescriptor]) -> Void
-    public typealias UpdateCharacteristicValue = (Data?) -> Void
-    public typealias UpdateDescriptorValue = (Any?) -> Void
-    public typealias WriteCharacteristicValue = () -> Void
-    public typealias WriteDescriptorValue = () -> Void
-    public typealias UpdateNotificationValue = (Data?) -> Void
+    public typealias DiscoverServicesContinuation = CheckedContinuation<[CBService], Error>
+    public typealias DiscoverIncludedServicesContinuation = CheckedContinuation<[CBService], Error>
+    public typealias DiscoverCharacteristicsContinuation = CheckedContinuation<[CBCharacteristic], Error>
+    public typealias DiscoverDescriptorsContinuation = CheckedContinuation<[CBDescriptor], Error>
+    public typealias UpdateCharacteristicValueContinuation = CheckedContinuation<Data?, Error>
+    public typealias UpdateDescriptorValueContinuation = CheckedContinuation<Any?, Error>
+    public typealias WriteCharacteristicValueContinuation = CheckedContinuation<Void, Error>
+    public typealias WriteDescriptorValueContinuation = CheckedContinuation<Void, Error>
+    public typealias UpdateNotificationValueHandler = (Result<Data?, Error>) -> Void
     
     // MARK: - Handlers
     
-    private var discoverServicesHandlers: [DiscoverServicesHandler] = []
-    private var discoverIncludedServicesHandlers: [DiscoverIncludedServicesHandler] = []
-    private var discoverCharacteristicsHandlers: [DiscoverCharacteristicsHandler] = []
-    private var discoverDescriptorsHandlers: [DiscoverDescriptorsHandler] = []
-    private var updateCharacteristicValueHandlers: [UpdateCharacteristicValue] = []
-    private var updateDescriptorValueHandlers: [UpdateDescriptorValue] = []
-    private var writeCharacteristicValueHandlers: [WriteCharacteristicValue] = []
-    private var writeDescriptorValueHandlers: [WriteDescriptorValue] = []
-    private var notificationValueHandlers: [CBUUID: UpdateNotificationValue] = [:]
+    private var discoverServicesContinuation: DiscoverServicesContinuation?
+    private var discoverIncludedServicesContinuation: DiscoverIncludedServicesContinuation?
+    private var discoverCharacteristicsContinuation: DiscoverCharacteristicsContinuation?
+    private var discoverDescriptorsContinuation: DiscoverDescriptorsContinuation?
+    private var updateCharacteristicValueContinuation: UpdateCharacteristicValueContinuation?
+    private var updateDescriptorValueContinuation: UpdateDescriptorValueContinuation?
+    private var writeCharacteristicValueContinuation: WriteCharacteristicValueContinuation?
+    private var writeDescriptorValueContinuation: WriteDescriptorValueContinuation?
+    private var notificationValueHandler: [CBUUID: UpdateNotificationValueHandler] = [:]
     
     // MARK: - Logging
 
@@ -52,120 +52,81 @@ class BKPeripheral: NSObject {
     }
 }
 
-// MARK: - Convenient
-
-extension BKPeripheral {
-    func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for serviceUUID: CBUUID, handler: @escaping DiscoverCharacteristicsHandler) {
-        discoverServices([serviceUUID]) { [weak self] services in
-            if let service = services.first(where: { $0.uuid == serviceUUID }) {
-                self?.discoverCharacteristics(characteristicUUIDs, for: service) { characteristics in
-                    handler(characteristics)
-                }
-            }
-        }
-    }
-    
-    func readCharacteristicValue(_ characteristicUUID: CBUUID, for serviceUUID: CBUUID, handler: @escaping UpdateCharacteristicValue) {
-        discoverCharacteristics([characteristicUUID], for: serviceUUID) { [weak self] characteristics in
-            if let characteristic = characteristics.first(where: { $0.uuid == characteristicUUID }) {
-                self?.readCharacteristicValue(characteristic) { value in
-                    handler(characteristic.value)
-                }
-            }
-        }
-    }
-}
-
 // MARK: - Basic
 
 extension BKPeripheral {
-    func discoverServices(_ serviceUUIDs: [CBUUID]?, handler: @escaping DiscoverServicesHandler) {
-        discoverServicesHandlers.append(handler)
-        peripheral.discoverServices(serviceUUIDs)
-    }
-    
-    func discoverServices(_ serviceUUIDs: [CBUUID]?) async -> [CBService] {
-        await withCheckedContinuation { (continuation: CheckedContinuation<[CBService], Never>) in
-            discoverServices(serviceUUIDs) { services in
-                continuation.resume(returning: services)
-            }
+    func discoverServices(_ serviceUUIDs: [CBUUID]?) async throws -> [CBService] {
+        try await withCheckedThrowingContinuation { (continuation: DiscoverServicesContinuation) in
+            logger.debug("discoverServices \(serviceUUIDs ?? [], privacy: .public)")
+            discoverServicesContinuation = continuation
+            peripheral.discoverServices(serviceUUIDs)
         }
     }
     
-    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: CBService, handler: @escaping DiscoverIncludedServicesHandler) {
-        discoverIncludedServicesHandlers.append(handler)
-        peripheral.discoverIncludedServices(includedServiceUUIDs, for: service)
-    }
-    
-    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: CBService) async -> [CBService] {
-        await withCheckedContinuation { (continuation: CheckedContinuation<[CBService], Never>) in
-            discoverIncludedServices(includedServiceUUIDs, for: service) { services in
-                continuation.resume(returning: services)
-            }
+    func discoverIncludedServices(_ includedServiceUUIDs: [CBUUID]?, for service: CBService) async throws -> [CBService] {
+        try await withCheckedThrowingContinuation { (continuation: DiscoverIncludedServicesContinuation) in
+            logger.debug("discoverIncludedServices \(includedServiceUUIDs ?? [], privacy: .public) for \(service, privacy: .public)")
+            discoverIncludedServicesContinuation = continuation
+            peripheral.discoverIncludedServices(includedServiceUUIDs, for: service)
         }
     }
     
-    func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: CBService, handler: @escaping DiscoverCharacteristicsHandler) {
-        discoverCharacteristicsHandlers.append(handler)
-        peripheral.discoverCharacteristics(characteristicUUIDs, for: service)
-    }
-    
-    func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: CBService) async -> [CBCharacteristic] {
-        await withCheckedContinuation { (continuation: CheckedContinuation<[CBCharacteristic], Never>) in
-            discoverCharacteristics(characteristicUUIDs, for: service) { characteristics in
-                continuation.resume(returning: characteristics)
-            }
+    func discoverCharacteristics(_ characteristicUUIDs: [CBUUID]?, for service: CBService) async throws -> [CBCharacteristic] {
+        try await withCheckedThrowingContinuation { (continuation: DiscoverCharacteristicsContinuation) in
+            logger.debug("discoverCharacteristics \(characteristicUUIDs ?? [], privacy: .public) for \(service, privacy: .public)")
+            discoverCharacteristicsContinuation = continuation
+            peripheral.discoverCharacteristics(characteristicUUIDs, for: service)
         }
     }
     
-    func discoverDescriptors(for characteristic: CBCharacteristic, handler: @escaping DiscoverDescriptorsHandler) {
-        discoverDescriptorsHandlers.append(handler)
-        peripheral.discoverDescriptors(for: characteristic)
-    }
-    
-    func discoverDescriptors(for characteristic: CBCharacteristic) async -> [CBDescriptor] {
-        await withCheckedContinuation { (continuation: CheckedContinuation<[CBDescriptor], Never>) in
-            discoverDescriptors(for: characteristic) { descriptors in
-                continuation.resume(returning: descriptors)
-            }
+    func discoverDescriptors(for characteristic: CBCharacteristic) async throws -> [CBDescriptor] {
+        try await withCheckedThrowingContinuation { (continuation: DiscoverDescriptorsContinuation) in
+            logger.debug("discoverDescriptors for \(characteristic.uuid, privacy: .public)")
+            discoverDescriptorsContinuation = continuation
+            peripheral.discoverDescriptors(for: characteristic)
         }
     }
     
-    func readCharacteristicValue(_ characteristic: CBCharacteristic, handler: @escaping UpdateCharacteristicValue) {
-        updateCharacteristicValueHandlers.append(handler)
-        peripheral.readValue(for: characteristic)
-    }
-    
-    func readCharacteristicValue(_ characteristic: CBCharacteristic) async -> Data? {
-        await withCheckedContinuation { (continuation: CheckedContinuation<Data?, Never>) in
-            readCharacteristicValue(characteristic) { value in
-                continuation.resume(returning: value)
-            }
+    func readCharacteristicValue(_ characteristic: CBCharacteristic) async throws -> Data? {
+        try await withCheckedThrowingContinuation { (continuation: UpdateCharacteristicValueContinuation) in
+            logger.debug("readCharacteristicValue \(characteristic.uuid, privacy: .public)")
+            updateCharacteristicValueContinuation = continuation
+            peripheral.readValue(for: characteristic)
         }
     }
     
-    func readDescriptorValue(_ descriptor: CBDescriptor, handler: @escaping UpdateDescriptorValue) {
-        updateDescriptorValueHandlers.append(handler)
-        peripheral.readValue(for: descriptor)
+    func readDescriptorValue(_ descriptor: CBDescriptor) async throws -> Any? {
+        try await withCheckedThrowingContinuation { (continuation: UpdateDescriptorValueContinuation) in
+            logger.debug("readDescriptorValue \(descriptor.uuid, privacy: .public)")
+            updateDescriptorValueContinuation = continuation
+            peripheral.readValue(for: descriptor)
+        }
     }
     
-    func writeCharacteristicValue(_ characteristic: CBCharacteristic, _ data: Data, handler: WriteCharacteristicValue?) {
-        if let handler {
-            writeCharacteristicValueHandlers.append(handler)
+    func writeCharacteristicValue(_ characteristic: CBCharacteristic, _ data: Data) async throws {
+        try await withCheckedThrowingContinuation { (continuation: WriteCharacteristicValueContinuation) in
+            logger.debug("writeCharacteristicValue \(characteristic.uuid, privacy: .public) data \(data.debugDescription, privacy: .public)")
+            writeDescriptorValueContinuation = continuation
             peripheral.writeValue(data, for: characteristic, type: .withResponse)
-        } else {
-            peripheral.writeValue(data, for: characteristic, type: .withoutResponse)
         }
     }
     
-    func writeDescriptorValue(_ descriptor: CBDescriptor, _ data: Data, handler: @escaping WriteDescriptorValue) {
-        writeDescriptorValueHandlers.append(handler)
-        peripheral.writeValue(data, for: descriptor)
+    func writeCharacteristicValue(_ characteristic: CBCharacteristic, _ data: Data) {
+        logger.debug("writeCharacteristicValue \(characteristic.uuid, privacy: .public) data \(data.debugDescription, privacy: .public)")
+        peripheral.writeValue(data, for: characteristic, type: .withoutResponse)
+    }
+    
+    func writeDescriptorValue(_ descriptor: CBDescriptor, _ data: Data) async throws {
+        try await withCheckedThrowingContinuation { (continuation: WriteDescriptorValueContinuation) in
+            logger.debug("writeDescriptorValue \(descriptor.uuid, privacy: .public) data \(data.debugDescription, privacy: .public)")
+            writeDescriptorValueContinuation = continuation
+            peripheral.writeValue(data, for: descriptor)
+        }
     }
 
-    func setCharacteristicNotifyValue(_ characteristic: CBCharacteristic, handler: UpdateNotificationValue?) {
-        if let handler {
-            notificationValueHandlers[characteristic.uuid] = handler
+    func setCharacteristic(_ characteristic: CBCharacteristic, notifyHandler: UpdateNotificationValueHandler?) {
+        if let notifyHandler {
+            notificationValueHandler[characteristic.uuid] = notifyHandler
             peripheral.setNotifyValue(true, for: characteristic)
         } else {
             peripheral.setNotifyValue(false, for: characteristic)
@@ -177,50 +138,81 @@ extension BKPeripheral: CBPeripheralDelegate {
     // MARK: - Discovering Services
         
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        discoverServicesHandlers.forEach { $0(peripheral.services ?? []) }
-        discoverServicesHandlers.removeAll()
+        logger.debug("didDiscoverServices \(peripheral.services ?? [], privacy: .public) error \(error?.localizedDescription ?? "", privacy: .public)")
+        if let error {
+            discoverServicesContinuation?.resume(throwing: error)
+        } else {
+            discoverServicesContinuation?.resume(returning: peripheral.services ?? [])
+        }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverIncludedServicesFor service: CBService, error: Error?) {
-        discoverIncludedServicesHandlers.forEach { $0(service.includedServices ?? []) }
-        discoverIncludedServicesHandlers.removeAll()
+        logger.debug("didDiscoverIncludedServices \(service.includedServices ?? [], privacy: .public) for \(service.uuid, privacy: .public) error \(error?.localizedDescription ?? "", privacy: .public)")
+        if let error {
+            discoverIncludedServicesContinuation?.resume(throwing: error)
+        } else {
+            discoverIncludedServicesContinuation?.resume(returning: service.includedServices ?? [])
+        }
     }
     
     // MARK: - Discovering Characteristics and their Descriptors
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        discoverCharacteristicsHandlers.forEach { $0(service.characteristics ?? []) }
-        discoverCharacteristicsHandlers.removeAll()
+        logger.debug("didDiscoverCharacteristics \(service.characteristics ?? [], privacy: .public) for \(service.uuid, privacy: .public) error \(error?.localizedDescription ?? "", privacy: .public)")
+        if let error {
+            discoverCharacteristicsContinuation?.resume(throwing: error)
+        } else {
+            discoverCharacteristicsContinuation?.resume(returning: service.characteristics ?? [])
+        }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
-        discoverDescriptorsHandlers.forEach { $0(characteristic.descriptors ?? []) }
-        discoverDescriptorsHandlers.removeAll()
+        logger.debug("didDiscoverDescriptors \(characteristic.descriptors ?? [], privacy: .public) for \(characteristic.uuid, privacy: .public) error \(error?.localizedDescription ?? "", privacy: .public)")
+        if let error {
+            discoverDescriptorsContinuation?.resume(throwing: error)
+        } else {
+            discoverDescriptorsContinuation?.resume(returning: characteristic.descriptors ?? [])
+        }
     }
     
     // MARK: - Retrieving Characteristic and Descriptor Values
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        notificationValueHandlers[characteristic.uuid]?(characteristic.value)
-        updateCharacteristicValueHandlers.forEach { $0(characteristic.value) }
-        updateCharacteristicValueHandlers.removeAll()
+        logger.debug("didUpdateValue \(characteristic.value ?? Data(), privacy: .public) for \(characteristic.uuid, privacy: .public) error \(error?.localizedDescription ?? "", privacy: .public)")
+        if let error {
+            updateCharacteristicValueContinuation?.resume(throwing: error)
+        } else {
+            updateCharacteristicValueContinuation?.resume(returning: characteristic.value)
+        }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
-        updateDescriptorValueHandlers.forEach { $0(descriptor.value) }
-        updateDescriptorValueHandlers.removeAll()
+        logger.debug("didUpdateValue \(descriptor.value.debugDescription, privacy: .public) for \(descriptor.uuid, privacy: .public) error \(error?.localizedDescription ?? "", privacy: .public)")
+        if let error {
+            updateDescriptorValueContinuation?.resume(throwing: error)
+        } else {
+            updateDescriptorValueContinuation?.resume(returning: descriptor.value)
+        }
     }
     
     // MARK: - Writing Characteristic and Descriptor Values
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        writeCharacteristicValueHandlers.forEach { $0() }
-        writeCharacteristicValueHandlers.removeAll()
+        logger.debug("didWriteValue \(characteristic.value ?? Data(), privacy: .public) for \(characteristic.uuid, privacy: .public) error \(error?.localizedDescription ?? "", privacy: .public)")
+        if let error {
+            writeCharacteristicValueContinuation?.resume(throwing: error)
+        } else {
+            writeCharacteristicValueContinuation?.resume(returning: ())
+        }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor descriptor: CBDescriptor, error: Error?) {
-        writeDescriptorValueHandlers.forEach { $0() }
-        writeDescriptorValueHandlers.removeAll()
+        logger.debug("didWriteValue \(descriptor.value.debugDescription, privacy: .public) for \(descriptor.uuid, privacy: .public) error \(error?.localizedDescription ?? "", privacy: .public)")
+        if let error {
+            writeDescriptorValueContinuation?.resume(throwing: error)
+        } else {
+            writeDescriptorValueContinuation?.resume(returning: ())
+        }
     }
     
     func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) { }
@@ -229,7 +221,7 @@ extension BKPeripheral: CBPeripheralDelegate {
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         if let _ = error {
-            notificationValueHandlers[characteristic.uuid] = nil
+            notificationValueHandler[characteristic.uuid] = nil
         }
     }
     

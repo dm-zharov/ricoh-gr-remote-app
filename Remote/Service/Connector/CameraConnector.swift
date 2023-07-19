@@ -13,47 +13,79 @@ enum MyError: Error {
 }
 
 protocol CameraConnector: RemoteConnector {
-    func info() async  -> CameraInfo?
-    func powerState() async -> Bool?
-    func releaseShutter(completion: @escaping () -> ())
+    func info() async throws -> CameraInfo?
+    func batteryLevel() async throws -> BatteryLevel?
+    func geoTag() async throws -> Bool?
 }
 
 extension BKPeripheral: CameraConnector {
-    func info() async -> CameraInfo? {
+    func info() async throws -> CameraInfo? {
         guard
-            let cameraInformation = await discoverServices(
+            let cameraInformation = try await discoverServices(
                 [GR.CameraInformation.uuid]
             ).first(where: { $0.uuid == GR.CameraInformation.uuid })
         else {
             return nil
         }
 
-        let characteristics = await discoverCharacteristics([
-            GR.CameraInformation.BluetoothDeviceName.uuid,
+        let characteristics = try await discoverCharacteristics([
             GR.CameraInformation.FirmwareRevision.uuid,
-            GR.CameraInformation.ManufacturerName.uuid,
             GR.CameraInformation.ModelNumber.uuid,
-            GR.CameraInformation.SerialNumber.uuid
+            GR.CameraInformation.SerialNumber.uuid,
+            GR.CameraInformation.BluetoothDeviceName.uuid
         ], for: cameraInformation)
         
+        guard
+            let version = try await readCharacteristicValue(characteristics[GR.CameraInformation.FirmwareRevision.uuid]),
+            let modelNumber = try await readCharacteristicValue(characteristics[GR.CameraInformation.ModelNumber.uuid]),
+            let serialNumber = try await readCharacteristicValue(characteristics[GR.CameraInformation.SerialNumber.uuid]),
+            let bluetooth = try await readCharacteristicValue(characteristics[GR.CameraInformation.BluetoothDeviceName.uuid])
+        else {
+            return nil
+        }
+
         return CameraInfo(
-            version:
-                await readCharacteristicValue(characteristics[GR.CameraInformation.FirmwareRevision.uuid]).stringValue,
-            modelNumber:
-                await readCharacteristicValue(characteristics[GR.CameraInformation.ModelNumber.uuid]).stringValue,
-            serialNumber:
-                await readCharacteristicValue(characteristics[GR.CameraInformation.SerialNumber.uuid]).stringValue,
-            bluetooth:
-                await readCharacteristicValue(characteristics[GR.CameraInformation.BluetoothDeviceName.uuid]).stringValue
+            version: String(data: version, encoding: .utf8),
+            modelNumber: String(data: modelNumber, encoding: .utf8),
+            serialNumber: String(data: serialNumber, encoding: .utf8),
+            bluetooth: String(data: bluetooth, encoding: .utf8)
         )
     }
     
-    func powerState() async -> Bool? {
-        nil
+    func batteryLevel() async throws -> BatteryLevel? {
+        let cameraInformation = try await discoverServices([GR.Camera.uuid])[GR.Camera.uuid]
+
+        let batteryLevel = try await discoverCharacteristics(
+            [GR.Camera.BatteryLevel.uuid], for: cameraInformation
+        )[GR.Camera.BatteryLevel.uuid]
+
+        guard
+            let value = try await readCharacteristicValue(batteryLevel)
+        else {
+            return nil
+        }
+        
+        print(value)
+        
+        return nil
     }
     
-    func releaseShutter(completion: @escaping () -> ()) {
+    func geoTag() async throws -> Bool? {
+        let cameraInformation = try await discoverServices([GR.Camera.uuid])[GR.Camera.uuid]
         
+        let geoTag = try await discoverCharacteristics(
+            [GR.Camera.GEOTag.uuid], for: cameraInformation
+        )[GR.Camera.GEOTag.uuid]
+        
+        guard
+            let value = try await readCharacteristicValue(geoTag)
+        else {
+            return nil
+        }
+        
+        print(value)
+        
+        return nil
     }
 }
 
@@ -62,32 +94,21 @@ class Virtual: CameraConnector {
         true
     }
     
-    func info() async -> CameraInfo? {
+    func info() async throws -> CameraInfo? {
         nil
     }
     
-    func powerState() async -> Bool? {
+    func batteryLevel() async throws -> BatteryLevel? {
         nil
     }
     
-    func releaseShutter(completion: @escaping () -> ()) {
-        
+    func geoTag() async throws -> Bool? {
+        nil
     }
 }
 
 extension Collection where Element: CBAttribute {
     subscript(uuid: CBUUID) -> Self.Element {
         first(where: { $0.uuid == uuid })!
-    }
-}
-
-extension Optional where Wrapped == Data {
-    var stringValue: String? {
-        switch self {
-        case .some(let data):
-            return String(data: data, encoding: .utf8)
-        case .none:
-            return nil
-        }
     }
 }

@@ -11,11 +11,13 @@ struct SettingsView: View {
     let camera: CameraConnector
     
     @State var info: CameraInfo?
+    @State var geotagging: Bool = false
+    @State var batteryLevel: BatteryLevel?
     
     var body: some View {
         List {
-            if let info {
-                Section {
+            Section {
+                if let info {
                     if let version = info.version {
                         LabeledContent("Version", value: version)
                     }
@@ -28,15 +30,36 @@ struct SettingsView: View {
                     if let bluetooth = info.bluetooth {
                         LabeledContent("Bluetooth", value: bluetooth)
                     }
+                } else {
+                    ProgressView()
                 }
-            } else {
-                ProgressView()
-                    .task {
-                        info = await camera.info()
-                    }
             }
+            
+            Section {
+                Toggle("Geotagging", isOn: $geotagging)
+            } footer: {
+                Text("Allow the Remote app to ...")
+            }
+            
+            Section {
+                if let batteryLevel = batteryLevel {
+                    Text(batteryLevel)
+                } else {
+                    ProgressView()
+                }
+            }
+            
         }
         .listStyle(.insetGrouped)
+        .task {
+            do {
+                self.info = try await camera.info()
+                self.geotagging = try await camera.geoTag() ?? false
+                self.batteryLevel = try await camera.batteryLevel()
+            } catch {
+                assertionFailure(error.localizedDescription)
+            }
+        }
     }
 }
 
