@@ -13,6 +13,8 @@
 		23132DBD2A670EB9002B2F0D /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DBC2A670EB9002B2F0D /* AppStore.swift */; };
 		23132DC02A67106B002B2F0D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DBF2A67106B002B2F0D /* SettingsView.swift */; };
 		23132DC22A6717C4002B2F0D /* CameraInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DC12A6717C4002B2F0D /* CameraInfo.swift */; };
+		23132DC82A683CC8002B2F0D /* Binding+Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DC72A683CC8002B2F0D /* Binding+Change.swift */; };
+		23132DCB2A683E67002B2F0D /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23132DCA2A683E67002B2F0D /* SetupView.swift */; };
 		2345D6172A642AEA00C0F7DF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6162A642AEA00C0F7DF /* App.swift */; };
 		2345D6192A642AEA00C0F7DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2345D6182A642AEA00C0F7DF /* ContentView.swift */; };
 		2345D61B2A642AEB00C0F7DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2345D61A2A642AEB00C0F7DF /* Assets.xcassets */; };
@@ -31,6 +33,8 @@
 		23132DBC2A670EB9002B2F0D /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
 		23132DBF2A67106B002B2F0D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		23132DC12A6717C4002B2F0D /* CameraInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraInfo.swift; sourceTree = "<group>"; };
+		23132DC72A683CC8002B2F0D /* Binding+Change.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Change.swift"; sourceTree = "<group>"; };
+		23132DCA2A683E67002B2F0D /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
 		2345D6132A642AEA00C0F7DF /* Remote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2345D6162A642AEA00C0F7DF /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		2345D6182A642AEA00C0F7DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,6 +74,30 @@
 				23132DBF2A67106B002B2F0D /* SettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		23132DC52A6828DC002B2F0D /* API */ = {
+			isa = PBXGroup;
+			children = (
+				2345D63E2A646FCF00C0F7DF /* CBUUID+RICOH.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		23132DC62A683CC0002B2F0D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				23132DC72A683CC8002B2F0D /* Binding+Change.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		23132DC92A683E5E002B2F0D /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				23132DCA2A683E67002B2F0D /* SetupView.swift */,
+			);
+			path = Setup;
 			sourceTree = "<group>";
 		};
 		2345D60A2A642AEA00C0F7DF = {
@@ -123,7 +151,9 @@
 		2345D6292A642CD900C0F7DF /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				23132DC62A683CC0002B2F0D /* Extensions */,
 				2345D62B2A642CF100C0F7DF /* Content */,
+				23132DC92A683E5E002B2F0D /* Setup */,
 				23132DBE2A671060002B2F0D /* Settings */,
 			);
 			path = Scene;
@@ -150,8 +180,8 @@
 		2345D62C2A645ABE00C0F7DF /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				23132DC52A6828DC002B2F0D /* API */,
 				23132DC12A6717C4002B2F0D /* CameraInfo.swift */,
-				2345D63E2A646FCF00C0F7DF /* CBUUID+RICOH.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -251,6 +281,7 @@
 				23132DC02A67106B002B2F0D /* SettingsView.swift in Sources */,
 				23132DB62A66BF65002B2F0D /* CBManagerState+CustomStringConvertable.swift in Sources */,
 				23132DC22A6717C4002B2F0D /* CameraInfo.swift in Sources */,
+				23132DC82A683CC8002B2F0D /* Binding+Change.swift in Sources */,
 				23132DBD2A670EB9002B2F0D /* AppStore.swift in Sources */,
 				2345D6192A642AEA00C0F7DF /* ContentView.swift in Sources */,
 				2345D6272A642CCE00C0F7DF /* BKCentralManager.swift in Sources */,
@@ -258,6 +289,7 @@
 				2345D6392A646E5F00C0F7DF /* CameraConnector.swift in Sources */,
 				2345D6172A642AEA00C0F7DF /* App.swift in Sources */,
 				2345D63F2A646FCF00C0F7DF /* CBUUID+RICOH.swift in Sources */,
+				23132DCB2A683E67002B2F0D /* SetupView.swift in Sources */,
 				2345D6342A6462A100C0F7DF /* RemoteConnector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

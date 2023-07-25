@@ -24,9 +24,6 @@ enum GR {
         enum BluetoothDeviceName {
             static let uuid = CBUUID(string: "97E34DA2-2E1A-405B-B80D-F8F0AA9CC51C")
         }
-        enum BluetoothMACAddress {
-            static let uuid = CBUUID(string: "1C5C6C55-8E57-4B32-AD80-B124AE229DEC")
-        }
         static let uuid = CBUUID(string: "9A5ED1C5-74CC-4C50-B5B6-66A48E7CCFF1")
     }
     
@@ -46,6 +43,9 @@ enum GR {
         enum GEOTag {
             static let uuid = CBUUID(string: "A36AFDCF-6B67-4046-9BE7-28FB67DBC071")
         }
+        enum OperationMode {
+            static let uuid = CBUUID(string: "1452335A-EC7F-4877-B8AB-0F72E18BB295")
+        }
         static let uuid = CBUUID(string: "4B445988-CAA0-4DD3-941D-37B4F52ACA86")
     }
     enum Shooting {
@@ -61,12 +61,18 @@ enum GR {
         static let uuid = CBUUID(string: "9F00F387-8345-4BBC-8B92-B87B52E3091A")
     }
     enum GPSControlCommand {
+        enum GPSInformation {
+            static let uuid = CBUUID(string: "28F59D60-8B8E-4FCD-A81F-61BDB46595A9")
+        }
         static let uuid = CBUUID(string: "84A0DD62-E8AA-4D0F-91DB-819B6724C69E")
     }
     enum WLANControlCommand {
         static let uuid = CBUUID(string: "F37F568F-9071-445D-A938-5441F2E82399")
     }
     enum BluetoothControlCommand {
+        enum BLEEnableCondition {
+            static let uuid = CBUUID(string: "D8676C92-DC4E-4D9E-ACCE-B9E251DDCC0C")
+        }
         enum PairedDeviceName {
             static let uuid = CBUUID(string: "FE3A32F8-A189-42DE-A391-B81AE4DAA76")
         }

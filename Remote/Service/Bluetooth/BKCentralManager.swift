@@ -148,8 +148,11 @@ extension BKCentralManager: CBCentralManagerDelegate {
         }
         
         if let peripheral = peripheral {
-            guard peripheral.state != .connected else { return }
-            central.connect(peripheral, options: peripheralConnectionOptions)
+            if peripheral.state == .connected {
+                connectionHandler?(.success(.init(peripheral)))
+            } else {
+                central.connect(peripheral, options: peripheralConnectionOptions)
+            }
         } else {
             central.scanForPeripherals(withServices: nil)
         }

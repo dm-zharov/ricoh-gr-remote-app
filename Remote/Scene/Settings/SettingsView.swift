@@ -10,9 +10,20 @@ import SwiftUI
 struct SettingsView: View {
     let camera: CameraConnector
     
+    // MARK: Device Info
+    
     @State var info: CameraInfo?
-    @State var geotagging: Bool = false
-    @State var batteryLevel: BatteryLevel?
+    
+    // MARK: Geotagging
+
+    @State var geoTag: Bool = false
+    @State var geoTagRequest: Bool = true
+    
+    // MARK: Date & Time
+    @State var dateTime: Date?
+    
+    // MARK: Last Sync Timestamp
+    @State var syncTimestamp: Date?
     
     var body: some View {
         List {
@@ -31,21 +42,44 @@ struct SettingsView: View {
                         LabeledContent("Bluetooth", value: bluetooth)
                     }
                 } else {
-                    ProgressView()
+                    LabeledContent("Camera Info") {
+                        ProgressView()
+                    }
                 }
             }
             
             Section {
-                Toggle("Geotagging", isOn: $geotagging)
+                LabeledContent("Geotagging") {
+                    Toggle(isOn: $geoTag.onChange { _ in
+                        geoTagRequest = true
+                    }) {
+                        
+                    }
+                    .disabled(geoTagRequest)
+                }
+                if geoTag {
+                    LabeledContent("Geographic Data") {
+                        Text("Automatic")
+                    }
+                }
+                
             } footer: {
                 Text("Allow the Remote app to ...")
             }
             
-            Section {
-                if let batteryLevel = batteryLevel {
-                    Text(batteryLevel)
-                } else {
-                    ProgressView()
+            if let dateTime, let syncTimestamp,
+               fabs(dateTime.timeIntervalSince1970 - syncTimestamp.timeIntervalSince1970) > 120 // s
+            {
+                Section {
+                    LabeledContent("Date") {
+                        Text(dateTime.formatted(date: .abbreviated, time: .omitted))
+                    }
+                    LabeledContent("Time") {
+                        Text(dateTime.formatted(date: .omitted, time: .standard))
+                    }
+                } footer: {
+                    Text("Camera time doesn't match to current.")
+                        .foregroundStyle(.red)
                 }
             }
             
@@ -54,10 +88,25 @@ struct SettingsView: View {
         .task {
             do {
                 self.info = try await camera.info()
-                self.geotagging = try await camera.geoTag() ?? false
-                self.batteryLevel = try await camera.batteryLevel()
+                self.geoTag = try await camera.geoTag() ?? false
+                self.geoTagRequest = false
+                self.dateTime = try await camera.dateTime()
+                self.syncTimestamp = Date()
             } catch {
                 assertionFailure(error.localizedDescription)
+            }
+        }
+        .onChange(of: geoTagRequest) {
+            guard geoTagRequest else {
+                return
+            }
+            Task {
+                do {
+                    try await camera.setGeoTag(geoTag)
+                    geoTagRequest = false
+                } catch {
+                    assertionFailure(error.localizedDescription)
+                }
             }
         }
     }

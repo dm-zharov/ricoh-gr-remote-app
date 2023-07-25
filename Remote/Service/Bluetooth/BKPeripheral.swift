@@ -33,6 +33,10 @@ class BKPeripheral: NSObject {
     private var writeDescriptorValueContinuation: WriteDescriptorValueContinuation?
     private var notificationValueHandler: [CBUUID: UpdateNotificationValueHandler] = [:]
     
+    // MARK: - Attribuites
+    
+    public var attributes: [CBAttribute] = []
+    
     // MARK: - Logging
 
     private let logger = Logger(subsystem: "Bluetooth", category: "Peripheral")
@@ -103,17 +107,15 @@ extension BKPeripheral {
         }
     }
     
-    func writeCharacteristicValue(_ characteristic: CBCharacteristic, _ data: Data) async throws {
+    func writeCharacteristicValue(_ characteristic: CBCharacteristic, _ data: Data, type: CBCharacteristicWriteType) async throws {
         try await withCheckedThrowingContinuation { (continuation: WriteCharacteristicValueContinuation) in
             logger.debug("writeCharacteristicValue \(characteristic.uuid, privacy: .public) data \(data.debugDescription, privacy: .public)")
-            writeDescriptorValueContinuation = continuation
-            peripheral.writeValue(data, for: characteristic, type: .withResponse)
+            writeCharacteristicValueContinuation = continuation
+            peripheral.writeValue(data, for: characteristic, type: type)
+            if case .withoutResponse = type {
+                writeCharacteristicValueContinuation?.resume(returning: ())
+            }
         }
-    }
-    
-    func writeCharacteristicValue(_ characteristic: CBCharacteristic, _ data: Data) {
-        logger.debug("writeCharacteristicValue \(characteristic.uuid, privacy: .public) data \(data.debugDescription, privacy: .public)")
-        peripheral.writeValue(data, for: characteristic, type: .withoutResponse)
     }
     
     func writeDescriptorValue(_ descriptor: CBDescriptor, _ data: Data) async throws {
@@ -142,7 +144,9 @@ extension BKPeripheral: CBPeripheralDelegate {
         if let error {
             discoverServicesContinuation?.resume(throwing: error)
         } else {
-            discoverServicesContinuation?.resume(returning: peripheral.services ?? [])
+            let services = peripheral.services ?? []
+            attributes.append(contentsOf: services)
+            discoverServicesContinuation?.resume(returning: services)
         }
     }
     
@@ -151,7 +155,9 @@ extension BKPeripheral: CBPeripheralDelegate {
         if let error {
             discoverIncludedServicesContinuation?.resume(throwing: error)
         } else {
-            discoverIncludedServicesContinuation?.resume(returning: service.includedServices ?? [])
+            let includedServices = service.includedServices ?? []
+            attributes.append(contentsOf: includedServices)
+            discoverIncludedServicesContinuation?.resume(returning: includedServices)
         }
     }
     
@@ -162,7 +168,9 @@ extension BKPeripheral: CBPeripheralDelegate {
         if let error {
             discoverCharacteristicsContinuation?.resume(throwing: error)
         } else {
-            discoverCharacteristicsContinuation?.resume(returning: service.characteristics ?? [])
+            let characteristics = service.characteristics ?? []
+            attributes.append(contentsOf: characteristics)
+            discoverCharacteristicsContinuation?.resume(returning: characteristics)
         }
     }
     
@@ -171,7 +179,9 @@ extension BKPeripheral: CBPeripheralDelegate {
         if let error {
             discoverDescriptorsContinuation?.resume(throwing: error)
         } else {
-            discoverDescriptorsContinuation?.resume(returning: characteristic.descriptors ?? [])
+            let descriptors = characteristic.descriptors ?? []
+            attributes.append(contentsOf: descriptors)
+            discoverDescriptorsContinuation?.resume(returning: descriptors)
         }
     }
     
